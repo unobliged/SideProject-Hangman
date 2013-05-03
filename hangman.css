@@ -6,20 +6,41 @@
 html, body {
   height: 100%;
   font-family: Verdana, sans-serif;
-  background-color: LightGray;
+  background-color: #D3D3D3;
   text-align: center;
   margin: 0 15%;
 }
 
 header {
   padding: 5px;
-  margin-bottom: 30px;
-  border-bottom: 1px solid;
+  margin: 20px 0;
+  border: 1px solid;
+  min-width: 320px;
+}
+
+header h1 {
+  text-decoration: underline;
+}
+
+.left { float: left;}
+.right { float: right;}
+
+#game-stats {
+  background-color: #FFF8DC;
+  border: 1px solid;
+  min-width: 320px;
+  margin: 20px 0px;
+  padding: 10px;
+  height: 20px;
+}
+
+#game-stats span {
+  padding: 0 5px;
 }
 
 #container {
   border: 1px solid;
-  height: 650px;
+  min-width: 320px;
 }
 
 #container img {
@@ -36,9 +57,9 @@ header {
   width: 15px;
   height: 15px;
   margin: 5px;
-	padding: 5px;
-	border: 1px solid;
-	border-radius: 5px;
+  padding: 5px;
+  border: 1px solid;
+  border-radius: 5px;
   display: inline-block;
 }  
 
