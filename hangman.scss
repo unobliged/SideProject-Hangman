@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: Verdana, sans-serif;
+  background-color: LightGray;
+  text-align: center;
+  margin: 0 15%;
+}
+
+header {
+  padding: 5px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid;
+}
+
+#container {
+  border: 1px solid;
+  height: 650px;
+}
+
+#container img {
+  margin-top: 20px;
+}
+
+#wordbox, #letterbox {
+  margin: 20px 40px;
+  padding: 10px;
+  border: 1px solid;  
+}
+
+#wordbox span, #letterbox span {
+  width: 15px;
+  height: 15px;
+  margin: 5px;
+	padding: 5px;
+	border: 1px solid;
+	border-radius: 5px;
+  display: inline-block;
+}  
+
+
+
