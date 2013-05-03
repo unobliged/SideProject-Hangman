@@ -63,5 +63,8 @@ header h1 {
   display: inline-block;
 }  
 
+#wordbox {
+  background-color: #3366FF;
+}
 
 

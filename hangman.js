@@ -1,10 +1,13 @@
 $(document).ready(function(){
-  var word = "plyfe";
+  var word = "bobafett";
   var pattern = new RegExp("[" + word + "]");
   var max_time = 60;
   var time_left;
   var timerId;
   var game_over = false;
+  var game_win = false;
+  var matches =[];
+  var match;
 
   function startTimer(time){
     time_left = time; 
@@ -13,11 +16,14 @@ $(document).ready(function(){
 
   function update(){
     time_left -= 1;
-    $("span.right").text(time_left);  
+    $("span.right").text('Timer: 0:' + time_left);  
     if (time_left <= 0){
-      window.clearInterval(timerId);
-      alert('Game Over');
       game_over = true;
+      window.clearInterval(timerId);
+      if (game_win === false){
+        alert('Game Over');
+        $("span.right").text('Timer: 0:00');  
+      }  
     }
   }
 
@@ -27,16 +33,34 @@ $(document).ready(function(){
     var key = String.fromCharCode(e.which);
     var player_word = '';
     if (pattern.test(key)){
+      var regexp = new RegExp(key, 'g');
+      matches = word.match(regexp);
+      while ((match = regexp.exec(word)) !== null){
+        matches.push(match.index);
+      }
       $('#wordbox span').each(function(index){
-        if (index === word.indexOf(key)){
-          $(this).text(key);
+        for (var m in matches) {
+          if (index === matches[m]){ 
+            $(this).text(key);
+          }
         }
+
         player_word += $(this).text();
+
         if (player_word === word || game_over === true){
-          alert('You win!');
+          if (game_over ===true){
+            alert('Game Over!');
+          } else {
+            $('#wordbox').css('background-color', '#009933');
+            alert('You win!');
+            $("span.right").text('Time Elapsed: ' + (max_time - time_left) + ' s');  
+          }
+          window.clearInterval(timerId);
           e.preventDefault();
         }
       });
+    } else {
+      $('#wordbox').css('background-color', '#FF6666');
     }
   });
 
