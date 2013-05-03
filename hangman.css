@@ -54,6 +54,7 @@ header h1 {
 }
 
 #wordbox span, #letterbox span {
+  background-color: #FFF8DC;
   width: 15px;
   height: 15px;
   margin: 5px;
