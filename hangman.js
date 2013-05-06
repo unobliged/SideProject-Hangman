@@ -134,6 +134,7 @@ $(document).ready(function(){
     game_over = true;
     $("span.right").text('Time Elapsed: ' + (max_time - time_left) + ' s');  
     window.clearInterval(timerId);
+    $('#container img').attr('src', 'Hangman-6.png');
 
     $('#wordbox').css('background-color', '#FF6666');
     if (game_win === true){
