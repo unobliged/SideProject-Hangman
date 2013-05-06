@@ -62,6 +62,7 @@ $(document).ready(function(){
     if (pattern.test(letter)){
       $('header h2').text('Good guess!');
       $('header h3').text('There is a ' + letter.toUpperCase() + ' in this word.');
+
       // Finds indexes of letters in word
       var regexp = new RegExp(letter, 'g');
       matches = word.match(regexp);
@@ -69,6 +70,7 @@ $(document).ready(function(){
         matches.push(match.index);
       }
 
+      // Handles word display and game win check
       $('#wordbox span').each(function(index){
         // Displays correct letter matches
         for (var m in matches) {
@@ -79,22 +81,23 @@ $(document).ready(function(){
 
         // Checks to see if word fully identified
         player_word += $(this).text();
-
         if (player_word === word){
           game_win = true;
           gameOver();
         }
       });
     } else {
-      if (used === false){
+      if (used === true){
+        $('header h2').text('Warning!');
+        $('header h3').text('You have already tried ' + letter.toUpperCase() + '.');
+      } else {
         wrong_guesses += 1;
         $('header h2').text('Sorry!');
         $('header h3').text('There is no ' + letter.toUpperCase() + ' in this word.');
-      } else {
-	      $('header h2').text('Warning!');
-	      $('header h3').text('You have already tried ' + letter.toUpperCase() + '.');
+        $('#container img').attr('src', 'Hangman-' + wrong_guesses + '.png');
       }  
-      if (wrong_guesses === 5){
+      
+      if (wrong_guesses === 6){
         gameOver();  
       }
     }
@@ -110,6 +113,8 @@ $(document).ready(function(){
 
   function usedLetter(letter){
     if (used.indexOf(letter) !== -1){
+      return true;
+    } else {
       used.push(letter);
       return false;
     }
