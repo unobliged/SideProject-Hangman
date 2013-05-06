@@ -9,6 +9,7 @@ $(document).ready(function(){
   var game_over = false;
   var matches =[];
   var match;
+  var used = [];
   var wrong_guesses = 0;
 
   function startTimer(time){
@@ -33,6 +34,7 @@ $(document).ready(function(){
 
   startTimer(max_time);
 
+  // Handles click input
   $('#letterbox span').click(function(e){
     if (out_of_time === true || game_over === true){
       e.preventDefault();
@@ -42,6 +44,7 @@ $(document).ready(function(){
     }
   });
 
+  // Handles keyboard input
   $('body').keypress(function(e){
     if (out_of_time === true || game_over === true){
       e.preventDefault();
@@ -53,6 +56,9 @@ $(document).ready(function(){
 
   function checkLetter(letter){
     var player_word = '';
+    hideLetter(letter);
+    var used = usedLetter(letter);
+
     if (pattern.test(letter)){
       $('header h2').text('Good guess!');
       $('header h3').text('There is a ' + letter.toUpperCase() + ' in this word.');
@@ -62,13 +68,6 @@ $(document).ready(function(){
       while ((match = regexp.exec(word)) !== null){
         matches.push(match.index);
       }
-
-      // Hides letters identified in word
-      $('#letterbox span').each(function(){
-        if ($(this).text() === letter.toUpperCase()){
-          $(this).hide();
-        }
-      });
 
       $('#wordbox span').each(function(index){
         // Displays correct letter matches
@@ -87,12 +86,32 @@ $(document).ready(function(){
         }
       });
     } else {
-      $('header h2').text('Sorry!');
-      $('header h3').text('There is no ' + letter.toUpperCase() + ' in this word.');
-      wrong_guesses += 1;
+      if (used === false){
+        wrong_guesses += 1;
+        $('header h2').text('Sorry!');
+        $('header h3').text('There is no ' + letter.toUpperCase() + ' in this word.');
+      } else {
+	      $('header h2').text('Warning!');
+	      $('header h3').text('You have already tried ' + letter.toUpperCase() + '.');
+      }  
       if (wrong_guesses === 5){
         gameOver();  
       }
+    }
+  }
+
+  function hideLetter(letter){
+    $('#letterbox span').each(function(){
+      if ($(this).text() === letter.toUpperCase()){
+        $(this).hide();
+      }
+    });
+  }
+
+  function usedLetter(letter){
+    if (used.indexOf(letter) !== -1){
+      used.push(letter);
+      return false;
     }
   }
 
