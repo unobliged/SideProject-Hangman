@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  var word = "bobafett";
+  var word = "thinks";
   var pattern = new RegExp("[" + word + "]");
   var max_time = 60;
   var time_left;
@@ -17,14 +17,21 @@ $(document).ready(function(){
     timerId = window.setInterval(update, 1000);
   }
 
+  function setWordboxLength(word){
+    var length = word.length;
+    for(var i = 1; i < length; i++){
+      $('#base-span').clone().appendTo($('#wordbox'));
+    }
+  }
+
   function update(){
     time_left -= 1;
-    if (time_left < 10){
+    if(time_left < 10){
       $("span.right").text('Timer: 0:0' + time_left);  
     } else { 
       $("span.right").text('Timer: 0:' + time_left);  
     }
-    if (time_left <= 0){
+    if(time_left <= 0){
       out_of_time = true;
       $('header h3').text('Out of time!');
       window.clearInterval(timerId);
@@ -32,11 +39,12 @@ $(document).ready(function(){
     }
   }
 
+  setWordboxLength(word);
   startTimer(max_time);
 
   // Handles click input
   $('#letterbox span').click(function(e){
-    if (out_of_time === true || game_over === true){
+    if(out_of_time === true || game_over === true){
       e.preventDefault();
     } else {
       var letter = $(this).text().toLowerCase();
@@ -46,7 +54,7 @@ $(document).ready(function(){
 
   // Handles keyboard input
   $('body').keypress(function(e){
-    if (out_of_time === true || game_over === true){
+    if(out_of_time === true || game_over === true){
       e.preventDefault();
     } else {
       var letter = String.fromCharCode(e.which);
@@ -59,7 +67,7 @@ $(document).ready(function(){
     hideLetter(letter);
     var used = usedLetter(letter);
 
-    if (pattern.test(letter)){
+    if(pattern.test(letter)){
       $('header h2').text('Good guess!');
       $('header h3').text('There is a ' + letter.toUpperCase() + ' in this word.');
 
@@ -74,20 +82,20 @@ $(document).ready(function(){
       $('#wordbox span').each(function(index){
         // Displays correct letter matches
         for (var m in matches) {
-          if (index === matches[m]){ 
+          if(index === matches[m]){ 
             $(this).text(letter);
           }
         }
 
         // Checks to see if word fully identified
         player_word += $(this).text();
-        if (player_word === word){
+        if(player_word === word){
           game_win = true;
           gameOver();
         }
       });
     } else {
-      if (used === true){
+      if(used === true){
         $('header h2').text('Warning!');
         $('header h3').text('You have already tried ' + letter.toUpperCase() + '.');
       } else {
@@ -97,7 +105,7 @@ $(document).ready(function(){
         $('#container img').attr('src', 'Hangman-' + wrong_guesses + '.png');
       }  
       
-      if (wrong_guesses === 6){
+      if(wrong_guesses === 6){
         gameOver();  
       }
     }
@@ -105,14 +113,14 @@ $(document).ready(function(){
 
   function hideLetter(letter){
     $('#letterbox span').each(function(){
-      if ($(this).text() === letter.toUpperCase()){
+      if($(this).text() === letter.toUpperCase()){
         $(this).hide();
       }
     });
   }
 
   function usedLetter(letter){
-    if (used.indexOf(letter) !== -1){
+    if(used.indexOf(letter) !== -1){
       return true;
     } else {
       used.push(letter);
@@ -121,12 +129,13 @@ $(document).ready(function(){
   }
 
   function calcStageScore(){
-    var stage_score = 100 - wrong_guesses*10 + time_left*5; 
-    if (game_win === true){
-      stage_score += 60;
-    } else {
-      stage_score = 0;
-    }
+    var stage_score = 100; 
+
+    if(game_win === true){
+      stage_score += 60 - wrong_guesses*10 + time_left*5;
+    } 
+    // for future multi-stage game, 15pts for all stages cleared
+
     $('span.left').text('Score: ' + stage_score);
   }
 
@@ -134,14 +143,18 @@ $(document).ready(function(){
     game_over = true;
     $("span.right").text('Time Elapsed: ' + (max_time - time_left) + ' s');  
     window.clearInterval(timerId);
-    $('#container img').attr('src', 'Hangman-6.png');
 
-    $('#wordbox').css('background-color', '#FF6666');
-    if (game_win === true){
+    if(game_win !== true){
+      $('#container img').attr('src', 'Hangman-6.png');
+    }
+
+    if(game_win === true){
+      $('#wordbox').css('background-color', '#008000');
       $('header h2').text('Marvelous!');
       $('header h3').text('You guessed the word!');
       alert('You won!');
     } else {
+      $('#wordbox').css('background-color', '#FF6666');
       $('header h2').text('Sorry!');
       $('header h3').text('You did not guess the word!');
       alert('You lost!');
